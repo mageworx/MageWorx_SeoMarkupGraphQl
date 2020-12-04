@@ -1,0 +1,43 @@
+interface ProductInterface {
+    mw_seo_markup: MwProductSeoMarkup @doc(description: "Product SEO Markup") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\Product")
+}
+
+interface CategoryInterface {
+    mw_seo_markup: MwCategorySeoMarkup @doc(description: "Category SEO Markup") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\Category")
+}
+
+type CmsPage {
+    mw_seo_markup: MwCmsPageSeoMarkup @doc(description: "CMS Page SEO Markup") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\CmsPage")
+}
+
+type MwProductSeoMarkup @doc(description: "Product SEO Markup") {
+    social_markup: String @doc(description: "Product Social Markup") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\SocialMarkup\\Product")
+    rich_snippets: MwProductRichSnippets @doc(description: "Rich Snippets") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets")
+}
+
+type MwProductRichSnippets @doc(description: "Rich Snippets") {
+    website: String @doc(description: "WebSite Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\WebSite")
+    seller: String @doc(description: "Seller Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Seller")
+    product: String @doc(description: "Product Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Product")
+}
+
+type MwCategorySeoMarkup @doc(description: "Category SEO Markup") {
+    social_markup: String @doc(description: "Category Social Markup") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\SocialMarkup\\Category")
+    rich_snippets: MwCategoryRichSnippets @doc(description: "Rich Snippets") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets")
+}
+
+type MwCategoryRichSnippets @doc(description: "Rich Snippets") {
+    website: String @doc(description: "WebSite Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\WebSite")
+    seller: String @doc(description: "Seller Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Seller")
+}
+
+type MwCmsPageSeoMarkup @doc(description: "CMS Page SEO Markup") {
+    social_markup: String @doc(description: "CMS Page Social Markup") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\SocialMarkup\\CmsPage")
+    rich_snippets: MwCmsPageRichSnippets @doc(description: "Rich Snippets") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets")
+}
+
+type MwCmsPageRichSnippets @doc(description: "Rich Snippets") {
+    website: String @doc(description: "WebSite Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\WebSite")
+    seller: String @doc(description: "Seller Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Seller")
+    webpage: String @doc(description: "Web Page Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\CmsPage\\WebPage")
+}
