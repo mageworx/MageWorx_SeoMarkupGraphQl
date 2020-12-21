@@ -1,0 +1,22 @@
+{
+    "name": "mageworx/module-seomarkup-graph-ql",
+    "description": "N/A",
+    "type": "magento2-module",
+    "require": {
+        "magento/framework": ">=102.0.0 < 104",
+        "mageworx/module-seomarkup": ">= 2.6.0"
+    },
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "MageWorx\\SeoMarkupGraphQl\\": ""
+        }
+    },
+    "version": "1.0.0"
+}
