@@ -14,8 +14,9 @@ use Magento\Framework\GraphQl\Query\Resolver\Value;
 use Magento\Framework\GraphQl\Query\ResolverInterface;
 use Magento\Framework\GraphQl\Schema\Type\ResolveInfo;
 use Magento\Framework\View\LayoutFactory;
-use MageWorx\SeoMarkup\Helper\Category as HelperCategory;
 use Magento\Catalog\Model\ResourceModel\Category\CollectionFactory;
+use MageWorx\SeoMarkup\Model\OpenGraphConfigProvider;
+use MageWorx\SeoMarkup\Model\TwitterCardsConfigProvider;
 
 class Category implements ResolverInterface
 {
@@ -25,30 +26,38 @@ class Category implements ResolverInterface
     protected $layoutFactory;
 
     /**
-     * @var HelperCategory
-     */
-    protected $helperCategory;
-
-    /**
      * @var CollectionFactory
      */
     protected $categoryCollectionFactory;
 
     /**
+     * @var OpenGraphConfigProvider
+     */
+    protected $openGraphConfigProvider;
+
+    /**
+     * @var TwitterCardsConfigProvider
+     */
+    protected $twCardsConfigProvider;
+
+    /**
      * Category constructor.
      *
      * @param LayoutFactory $layoutFactory
-     * @param HelperCategory $helperCategory
      * @param CollectionFactory $categoryCollectionFactory
+     * @param OpenGraphConfigProvider $openGraphConfigProvider
+     * @param TwitterCardsConfigProvider $twCardsConfigProvider
      */
     public function __construct(
         LayoutFactory $layoutFactory,
-        HelperCategory $helperCategory,
-        CollectionFactory $categoryCollectionFactory
+        CollectionFactory $categoryCollectionFactory,
+        OpenGraphConfigProvider $openGraphConfigProvider,
+        TwitterCardsConfigProvider $twCardsConfigProvider
     ) {
         $this->layoutFactory             = $layoutFactory;
-        $this->helperCategory            = $helperCategory;
         $this->categoryCollectionFactory = $categoryCollectionFactory;
+        $this->openGraphConfigProvider   = $openGraphConfigProvider;
+        $this->twCardsConfigProvider     = $twCardsConfigProvider;
     }
 
     /**
@@ -66,7 +75,9 @@ class Category implements ResolverInterface
             throw new LocalizedException(__('"model" value should be specified'));
         }
 
-        if (!$this->helperCategory->isOgEnabled() && !$this->helperCategory->isTwEnabled()) {
+        if (!$this->openGraphConfigProvider->isEnabledForCategory()
+            && !$this->twCardsConfigProvider->isEnabledForCategory()
+        ) {
             return '';
         }
 
@@ -108,12 +119,38 @@ class Category implements ResolverInterface
      */
     protected function getAttributesForCollection(): array
     {
-        return [
+        $attributes = [
             'name',
             'meta_title',
             'description',
             'meta_description',
             'image'
         ];
+
+        $ogCategoryTitleCode = $this->openGraphConfigProvider->getCategoryTitleCode();
+
+        if ($ogCategoryTitleCode) {
+            $attributes[] = $ogCategoryTitleCode;
+        }
+
+        $ogCategoryDescriptionCode = $this->openGraphConfigProvider->getCategoryDescriptionCode();
+
+        if ($ogCategoryDescriptionCode) {
+            $attributes[] = $ogCategoryDescriptionCode;
+        }
+
+        $twCategoryTitleCode = $this->twCardsConfigProvider->getCategoryTitleCode();
+
+        if ($twCategoryTitleCode) {
+            $attributes[] = $twCategoryTitleCode;
+        }
+
+        $twCategoryDescriptionCode = $this->twCardsConfigProvider->getCategoryDescriptionCode();
+
+        if ($twCategoryDescriptionCode) {
+            $attributes[] = $twCategoryDescriptionCode;
+        }
+
+        return $attributes;
     }
 }

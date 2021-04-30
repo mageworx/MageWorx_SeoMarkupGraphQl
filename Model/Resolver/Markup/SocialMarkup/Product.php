@@ -19,6 +19,8 @@ use Magento\Framework\App\Area;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
 use MageWorx\SeoMarkup\Helper\Product as HelperProduct;
+use MageWorx\SeoMarkup\Model\OpenGraphConfigProvider;
+use MageWorx\SeoMarkup\Model\TwitterCardsConfigProvider;
 
 class Product implements ResolverInterface
 {
@@ -43,23 +45,39 @@ class Product implements ResolverInterface
     protected $helperProduct;
 
     /**
+     * @var OpenGraphConfigProvider
+     */
+    protected $openGraphConfigProvider;
+
+    /**
+     * @var TwitterCardsConfigProvider
+     */
+    protected $twCardsConfigProvider;
+
+    /**
      * Product constructor.
      *
      * @param LayoutFactory $layoutFactory
      * @param State $appState
      * @param CollectionFactory $productCollectionFactory
      * @param HelperProduct $helperProduct
+     * @param OpenGraphConfigProvider $openGraphConfigProvider
+     * @param TwitterCardsConfigProvider $twCardsConfigProvider
      */
     public function __construct(
         LayoutFactory $layoutFactory,
         State $appState,
         CollectionFactory $productCollectionFactory,
-        HelperProduct $helperProduct
+        HelperProduct $helperProduct,
+        OpenGraphConfigProvider $openGraphConfigProvider,
+        TwitterCardsConfigProvider $twCardsConfigProvider
     ) {
         $this->layoutFactory            = $layoutFactory;
         $this->appState                 = $appState;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->helperProduct            = $helperProduct;
+        $this->openGraphConfigProvider  = $openGraphConfigProvider;
+        $this->twCardsConfigProvider    = $twCardsConfigProvider;
     }
 
     /**
@@ -78,7 +96,9 @@ class Product implements ResolverInterface
             throw new LocalizedException(__('"model" value should be specified'));
         }
 
-        if (!$this->helperProduct->isOgEnabled() && !$this->helperProduct->isTwEnabled()) {
+        if (!$this->openGraphConfigProvider->isEnabledForProduct()
+            && !$this->twCardsConfigProvider->isEnabledForProduct()
+        ) {
             return '';
         }
 
@@ -167,6 +187,30 @@ class Product implements ResolverInterface
 
         if ($descriptionCode) {
             $attributes[] = $descriptionCode;
+        }
+
+        $ogProductTitleCode = $this->openGraphConfigProvider->getProductTitleCode();
+
+        if ($ogProductTitleCode) {
+            $attributes[] = $ogProductTitleCode;
+        }
+
+        $ogProductDescriptionCode = $this->openGraphConfigProvider->getProductDescriptionCode();
+
+        if ($ogProductDescriptionCode) {
+            $attributes[] = $ogProductDescriptionCode;
+        }
+
+        $twProductTitleCode = $this->twCardsConfigProvider->getProductTitleCode();
+
+        if ($twProductTitleCode) {
+            $attributes[] = $twProductTitleCode;
+        }
+
+        $twProductDescriptionCode = $this->twCardsConfigProvider->getProductDescriptionCode();
+
+        if ($twProductDescriptionCode) {
+            $attributes[] = $twProductDescriptionCode;
         }
 
         return $attributes;
