@@ -39,7 +39,7 @@ class WebPage implements ResolverInterface
      * @param array|null $args
      * @return Value|mixed
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         $layout = $this->layoutFactory->create();
         $block  = $layout->createBlock(\MageWorx\SeoMarkup\Block\Head\Json\Page::class, '', ['data' => []]);

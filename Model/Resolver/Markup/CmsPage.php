@@ -52,7 +52,7 @@ class CmsPage implements ResolverInterface
      * @return array|Value|mixed
      * @throws LocalizedException
      */
-    public function resolve(Field $field, $context, ResolveInfo $info, array $value = null, array $args = null)
+    public function resolve(Field $field, $context, ResolveInfo $info, ?array $value = null, ?array $args = null)
     {
         if (!isset($value[PageInterface::PAGE_ID])) {
             throw new LocalizedException(__('"%1" value should be specified', PageInterface::PAGE_ID));
