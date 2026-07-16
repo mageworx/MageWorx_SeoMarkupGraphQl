@@ -19,6 +19,7 @@ type MwProductRichSnippets @doc(description: "Rich Snippets") {
     website: String @doc(description: "WebSite Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\WebSite")
     seller: String @doc(description: "Seller Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Seller")
     product: String @doc(description: "Product Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Product")
+    breadcrumbs: String @doc(description: "BreadcrumbList Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Breadcrumbs")
 }
 
 type MwCategorySeoMarkup @doc(description: "Category SEO Markup") {
@@ -29,6 +30,7 @@ type MwCategorySeoMarkup @doc(description: "Category SEO Markup") {
 type MwCategoryRichSnippets @doc(description: "Rich Snippets") {
     website: String @doc(description: "WebSite Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\WebSite")
     seller: String @doc(description: "Seller Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Seller")
+    breadcrumbs: String @doc(description: "BreadcrumbList Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Breadcrumbs")
 }
 
 type MwCmsPageSeoMarkup @doc(description: "CMS Page SEO Markup") {
@@ -40,4 +42,5 @@ type MwCmsPageRichSnippets @doc(description: "Rich Snippets") {
     website: String @doc(description: "WebSite Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\WebSite")
     seller: String @doc(description: "Seller Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Seller")
     webpage: String @doc(description: "Web Page Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\CmsPage\\WebPage")
+    breadcrumbs: String @doc(description: "BreadcrumbList Rich Snippets.") @resolver(class: "MageWorx\\SeoMarkupGraphQl\\Model\\Resolver\\Markup\\RichSnippets\\Breadcrumbs")
 }
