@@ -91,7 +91,8 @@ class Product implements ResolverInterface
             \MageWorx\SeoMarkup\Block\Head\Json\Product::class,
             '',
             [
-                'data' => []
+                // ProductGroup markup is single-page/storefront-only in v1; keep GraphQL on ordinary Product.
+                'data' => ['allow_product_group' => false]
             ]
         );
         $block->setEntity($product);
