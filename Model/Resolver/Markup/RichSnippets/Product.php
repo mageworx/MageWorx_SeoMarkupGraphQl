@@ -19,6 +19,7 @@ use Magento\Framework\App\Area;
 use Magento\Catalog\Model\ResourceModel\Product\CollectionFactory;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
 use MageWorx\SeoMarkup\Helper\Product as HelperProduct;
+use MageWorx\SeoMarkup\Model\Product\MarkupState;
 
 class Product implements ResolverInterface
 {
@@ -43,23 +44,31 @@ class Product implements ResolverInterface
     protected $helperProduct;
 
     /**
+     * @var MarkupState|null
+     */
+    protected $markupState;
+
+    /**
      * Product constructor.
      *
      * @param LayoutFactory $layoutFactory
      * @param State $appState
      * @param CollectionFactory $productCollectionFactory
      * @param HelperProduct $helperProduct
+     * @param MarkupState|null $markupState
      */
     public function __construct(
         LayoutFactory $layoutFactory,
         State $appState,
         CollectionFactory $productCollectionFactory,
-        HelperProduct $helperProduct
+        HelperProduct $helperProduct,
+        ?MarkupState  $markupState = null
     ) {
         $this->layoutFactory            = $layoutFactory;
         $this->appState                 = $appState;
         $this->productCollectionFactory = $productCollectionFactory;
         $this->helperProduct            = $helperProduct;
+        $this->markupState              = $markupState;
     }
 
     /**
@@ -97,7 +106,14 @@ class Product implements ResolverInterface
         );
         $block->setEntity($product);
 
-        return $this->appState->emulateAreaCode(Area::AREA_FRONTEND, [$block, 'toHtml']);
+        try {
+            return $this->appState->emulateAreaCode(Area::AREA_FRONTEND, [$block, 'toHtml']);
+        } finally {
+            // Frontend emulation activates the storefront cleanup; keep it out of the rest of the query.
+            if ($this->markupState) {
+                $this->markupState->reset();
+            }
+        }
     }
 
     /**
