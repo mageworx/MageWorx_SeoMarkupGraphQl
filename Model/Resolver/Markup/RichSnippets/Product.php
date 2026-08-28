@@ -147,6 +147,7 @@ class Product implements ResolverInterface
         ];
 
         if ($this->helperProduct->isUseSpecialPriceFunctionality()) {
+            $attributes[] = 'special_price';
             $attributes[] = 'special_from_date';
             $attributes[] = 'special_to_date';
         }
