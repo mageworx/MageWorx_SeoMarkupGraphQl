@@ -236,6 +236,13 @@ class Product implements ResolverInterface
             }
         }
 
+        // SeoMarkup 2.15+: attributes output as additionalProperty. Older versions lack the getter.
+        if (method_exists($this->helperProduct, 'getAdditionalProperties')) {
+            foreach (array_keys($this->helperProduct->getAdditionalProperties()) as $attributeCode) {
+                $attributes[] = (string)$attributeCode;
+            }
+        }
+
         return $attributes;
     }
 }
