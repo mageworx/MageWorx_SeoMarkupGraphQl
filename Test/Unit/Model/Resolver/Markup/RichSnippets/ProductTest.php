@@ -40,4 +40,31 @@ class ProductTest extends TestCase
         self::assertContains('special_from_date', $attributes);
         self::assertContains('special_to_date', $attributes);
     }
+
+    /**
+     * The resolver loads the product through its own collection: an attribute missing from the
+     * select is simply absent from the markup.
+     */
+    public function testAttributesForCollectionIncludeAdditionalPropertyAttributes(): void
+    {
+        $helperProduct = $this->createMock(HelperProduct::class);
+        $helperProduct->method('getAdditionalProperties')->willReturn(['voltage' => '', 'material' => 'Fabric']);
+
+        $resolver = new class (
+            $this->createMock(LayoutFactory::class),
+            $this->createMock(State::class),
+            $this->createMock(CollectionFactory::class),
+            $helperProduct
+        ) extends ProductResolver {
+            public function getAttributes(): array
+            {
+                return $this->getAttributesForCollection();
+            }
+        };
+
+        $attributes = $resolver->getAttributes();
+
+        self::assertContains('voltage', $attributes);
+        self::assertContains('material', $attributes);
+    }
 }
