@@ -67,4 +67,38 @@ class ProductTest extends TestCase
         self::assertContains('voltage', $attributes);
         self::assertContains('material', $attributes);
     }
+
+    public function testAttributesForCollectionIncludeDimensionAttributes(): void
+    {
+        $helperProduct = $this->createMock(HelperProduct::class);
+        $helperProduct->method('getAdditionalProperties')->willReturn([]);
+        $helperProduct->method('getDimensionAttributeCodes')->willReturn(
+            ['width' => 'mw_width', 'height' => 'mw_height', 'depth' => 'mw_length']
+        );
+
+        $attributes = $this->resolver($helperProduct)->getAttributes();
+
+        self::assertContains('mw_width', $attributes);
+        self::assertContains('mw_height', $attributes);
+        self::assertContains('mw_length', $attributes);
+    }
+
+    /**
+     * @param HelperProduct $helperProduct
+     * @return object
+     */
+    private function resolver($helperProduct)
+    {
+        return new class (
+            $this->createMock(LayoutFactory::class),
+            $this->createMock(State::class),
+            $this->createMock(CollectionFactory::class),
+            $helperProduct
+        ) extends ProductResolver {
+            public function getAttributes(): array
+            {
+                return $this->getAttributesForCollection();
+            }
+        };
+    }
 }

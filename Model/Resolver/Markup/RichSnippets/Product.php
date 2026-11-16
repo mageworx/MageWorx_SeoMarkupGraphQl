@@ -243,6 +243,13 @@ class Product implements ResolverInterface
             }
         }
 
+        // SeoMarkup 2.16+: attributes output as width / height / depth.
+        if (method_exists($this->helperProduct, 'getDimensionAttributeCodes')) {
+            foreach (array_values($this->helperProduct->getDimensionAttributeCodes()) as $attributeCode) {
+                $attributes[] = (string)$attributeCode;
+            }
+        }
+
         return $attributes;
     }
 }
